@@ -1,5 +1,6 @@
 // fire base configuration
-var firebase_config = {
+/*
+let firebase_config = {
 	    apiKey: "AIzaSyBrrzBPQMHCAUySaux24XpYWt971m0FARo",
 	    authDomain: "anyexchange-net.firebaseapp.com",
 	    databaseURL: "https://anyexchange-net.firebaseio.com",
@@ -7,18 +8,12 @@ var firebase_config = {
 	    storageBucket: "",
 	    messagingSenderId: "726858173685"
 	  };
-
-var RealtimeAppKey = "FCVghZ";
-
 // Notification config
-var notifiChannel = "notifications_channel";
-// The notification title
-const DEFAULT_TITLE = 'Web Push Notification';
-// the icon logo of noti
-const DEFAULT_LOGO = 'img/realtime-logo.jpg';
-const DEFAULT_URL = "http://anyexchange.net";
+let notifiChannel = "notifications_channel";
+*/
 
 //CHAT CONFIG
+let RealtimeAppKey = "BccanU";
 //The Realtime channel
-var chatChannel = "chat";
-var sysChannel = "system_message";
+let channel_cmd = "c_cmd";
+let channel_global = "c_global";

@@ -1,19 +1,23 @@
 body {
-  width: 644px;
+  width: 100%;
   margin:0 auto;
   background-color: white;
+  font-size: 18px;
 }
-
-#msgInput {
-  margin-top: 30px;
+.container {
+  width: 100%;
+  float: left;
+}
+.input_group {
+  position: absolute;
+  bottom: 10px;
 }
 
 #log {
-	width: 400px;
+    position: relative;
+	width: 70%;
 	float: left;
-	height: 200px;
-  margin-top: 50px;
-  max-height: 200px;
+	height: 90vh;
   overflow: auto;
   scrollbar: none;
   text-align: left;
@@ -35,14 +39,13 @@ body {
 }
 
 .time {
-  font-size: 10px;
+  font-size: 11px;
 }
 #user-list {
-	width: 200px;
+	width: 25%;
 	float: left;
-	height: 200px;
-  margin-top: 50px;
-  max-height: 200px;
+	height: 90vh;
+
   overflow: auto;
   scrollbar: none;
   text-align: left;
@@ -57,4 +60,48 @@ body {
   cursor: pointer;
 }
 	
+.user_select {
+  background-color: coral;
+}
+
+.hidden {
+  display: none;
+}
+
+.blink_text {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+.btn_back {
+  position: absolute;
+  display: none;
+  top: 5px;
+  left: 20px;
+  border: 1px solid #000;
+  background-color: #F7931E;
+  width: 50px;
+  height: 25px;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 25px;
+  cursor: pointer;
+}
+.mobile_title {
+  position: absolute;
+  display: none;
+  font-size: 20px;
+  top: 5px;
+  left: 80px;
+}
+.mobile_off {display: block}
+@media (max-width: 768px) {
+  .mobile_off {display: none}
+  #log {width: 100%; padding-top: 40px}
+  #user-list {width: 100%}
+  .btn_back, .btn_back {display: block}
 }

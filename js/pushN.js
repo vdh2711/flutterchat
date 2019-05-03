@@ -1,5 +1,5 @@
 // Generate the user private channel
-var myId = getChatId();
+
 //The current user id (random between 1 and 1000)
 
 $(document).ready(function() {
@@ -75,15 +75,6 @@ function S4() {
 
 // generate the user private channel and save it at the local storage
 // so we always use the same channel for each user
-function getChatId() {
-	myId = localStorage.getItem("chat_channel");
-	if (myId == null || myId == "null" || myId == undefined){ 
-		// The current user id (random between 1 and 1000)
-		myId = "ID_" + Math.floor((Math.random() * 1000) + 1);
-		localStorage.setItem("chat_channel", myId);
-	}
-	return myId;
-}
 
 // send a message to the user private channel to trigger a push notification
 function sendNotifications(message, url, title, logo) {
