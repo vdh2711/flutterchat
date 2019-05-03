@@ -8,7 +8,7 @@ var firebase_config = {
 	    messagingSenderId: "726858173685"
 	  };
 
-var RealtimeAppKey = "BccanU";
+var RealtimeAppKey = "FCVghZ";
 
 // Notification config
 var notifiChannel = "notifications_channel";
