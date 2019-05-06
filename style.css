@@ -101,6 +101,6 @@ body {
 @media (max-width: 768px) {
   .mobile_off {display: none}
   #log {width: 100%; padding-top: 40px}
-  #user-list {width: 100%}
+  #channel-list {width: 100%}
   .btn_back, .btn_back {display: block}
 }
