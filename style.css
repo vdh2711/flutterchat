@@ -41,13 +41,12 @@ body {
 .time {
   font-size: 11px;
 }
-#user-list {
+#channel-list {
 	width: 25%;
 	float: left;
 	height: 90vh;
 
   overflow: auto;
-  scrollbar: none;
   text-align: left;
   padding: 10px;
   border: solid 1px gray;

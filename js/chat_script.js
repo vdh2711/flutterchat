@@ -15,15 +15,15 @@ $(document).ready(function () {
     client.onConnected = function (the_client) {
         // client is connected
         $("#log").append("Connected");
-        // subscribe the chat channel
-        // the exe_chat callback function will handle new messages
+        // SUBSCRIBE CHANNEL when usser logged in
+        // Global channel ->
         the_client.subscribe(channel_global, true, get_msg);
-        // the exe_cmd callback function will handle new messages was sent to all user
+        // cmd channel
         the_client.subscribe(channel_cmd, true, exe_cmd);
         // the exe_my_cmd callback function will handle messages sent only to me
         the_client.subscribe(myId, true, exe_cmd);
         // send cmd to all user add myId to user list (me included)
-        send_cmd("new_user_connect", {"myId": myId, "myName": myName});
+        send_cmd("new_user_connect", {"uId": myId, "uName": myName});
     };
 });
 
@@ -79,12 +79,6 @@ function switch_channel(channel) {
     // show, hide message on channel
     $(".chat_message").addClass("hidden");
     $("." + channel).removeClass("hidden");
-
-    // check channel is exist
-    if (channel === channel_global) {
-        return;
-    }
-    join_channel(channel);
 }
 function join_channel(channel) {
     if (!client.isSubscribed(channel)) {
@@ -98,7 +92,7 @@ function exe_chat(message, channel) {
     let cl_hidden = "";
 
     if (active_channel !== channel) {
-        if (channel == channel_global) {
+        if (channel === channel_global) {
             $("#" + channel_global).addClass("blink_text");
         } else {
             $("#" + receivedMessage.id).addClass("blink_text");
@@ -127,35 +121,32 @@ function onEnter() {
 
 // this function will run when a user connect to app
 function new_user_connect(param) {
-
-    // all User 
-    if (param.myId === myId) {
+    let uId = param.uId;
+    if (uId === myId) {
         /* Run for NEW CONNENCTED USER */
         // add Global tag to  user list
         let global = "<div id='" + channel_global + "' onclick=\"select_user('" + channel_global + "')\" class='user-item user_select'>Global</div>";
-        $("#user-list").append(global);
+        $("#channel-list").append(global);
     } else {
         /* Run for OLD CONNENCTED USER */
         // add new user to list
         add_user_to_list(param);
-        // all user 
-        send_cmd("add_user_to_list", param, param.myId);
+        // all old user will send info to NEW CONNENCTED USER
+        send_cmd("add_user_to_list", {"uId": myId, "uName": myName}, uId);
     }
 }
 
 function add_user_to_list(param) {
-    let uId = param.myId;
-    let display_name = "";
-    if (param.myName === "") {
-        display_name = uId;
-    } else {
-        display_name = param.myName;
+    let uId = param.uId;
+    let display_name = uId;
+    if (param.uName !== "") {
+        display_name = param.uName;
     }
     if ($("#" + uId).html() !== undefined) {
-        $("#" + uId).html(uId);
+        $("#" + uId).html(display_name);
     } else {
         let user_item = "<div id='" + uId + "' class='user-item' onclick=\"select_user('" + uId + "')\">" + display_name + "</div>";
-        $("#user-list").append(user_item);
+        $("#channel-list").append(user_item);
     }
 
 }
@@ -165,28 +156,31 @@ function userOffline(uId) {
 }
 function select_user(uId) {
     $("#log").removeClass("mobile_off");
-    $("#user-list").addClass("mobile_off");
+    $("#channel-list").addClass("mobile_off");
 
     $(".user_select").removeClass("user_select");
     $("#" + uId).addClass("user_select");
+
     let channel = "";
     if (uId === channel_global) {
         channel = channel_global;
     } else {
         channel = getOnlineChannel(uId);
-        // make other side join to same channel to receive message
-        send_cmd("join_channel", channel, uId);
     }
     switch_channel(channel);
     // remove blink text
     $("#" + uId).removeClass("blink_text");
 }
 function getOnlineChannel(uId) {
-    let channel = myId + uId;
-    if (client.isSubscribed(channel)) {
-        return channel;
+    let channel1 = myId + uId;
+    let channel2 = uId + myId;
+    if (client.isSubscribed(channel1)) {
+        return channel1;
+    } else if (client.isSubscribed(channel2)) {
+        return channel2
     } else {
-        return uId + myId;
+        join_channel(channel1);
+        send_cmd("join_channel", channel1, uId);
     }
 }
 function send_private() {
@@ -215,12 +209,10 @@ window.onbeforeunload = function (event) {
     } if (event) {
         //event.returnValue = message;
         send_cmd("userOffline", myId);
-        // sendNotifications("User " + myId + " is offline");
     }
-    //return message;
 }
 
 function back() {
     $("#log").addClass("mobile_off");
-    $("#user-list").removeClass("mobile_off");
+    $("#channel-list").removeClass("mobile_off");
 }
